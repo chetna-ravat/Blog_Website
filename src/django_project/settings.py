@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -122,8 +123,27 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# media root is going to be the full path of directory where we want django to store uploaded file
+# for performance reasons these files are stored in the file system and not on the database
+# os.path.join makes sure that full path to that directory is created properly
+# BASE_DIR is defined above, it specifies the location of our projects base directory. media is simply the name of the folder
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# In crispy package default bootstrap version is v2, we wanted to use bootstrap v4 so we changed it below
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# by default django would take us to profile page after login 
+# Inorder to change that we have to redirect it to wherever we want it to go
+LOGIN_REDIRECT_URL = 'blog-home'
+
+# django has a default login route which is django/account/login, we want to change it to login
+# eg: I cannot access my profile without loggin in, so when I login then django would take me to accounts page 
+# This would be so frustrating, so we change the route to login
+LOGIN_URL = 'login'
