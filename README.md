@@ -20,7 +20,7 @@ All the dependencies required to run this project are available in the [requirem
 
 #### 1. Create virtual environment
 ```shell
-python3.7 -m venv env
+python3 -m venv env
 ```
 
 #### 2. Activate virtual environment
@@ -34,8 +34,11 @@ pip install -r requirements.txt
 ```
 
 #### 4. Run the project
+**Note**: Update [SECURITY_KEY](https://github.com/chetna-ravat/Blog_Website/blob/main/src/django_project/.env#L2) with actual key.
 ```shell
 python3 manage.py runserver
 ```
-#### 5. The project would run on loaclhost on the web browser
-http://localhost:8000
+
+
+Open http://localhost:8000 on web browser to access blog application.
+
