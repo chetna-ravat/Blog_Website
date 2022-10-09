@@ -8,7 +8,7 @@ Blog_website is a full featured web application build using django framework and
 
 - Allows user to create an account.
 - Allows user to create/ update/ delete a post.
-- Allows user to filer posts based on an author.
+- Allows user to filter posts based on an author.
 - Pagination: Displaying 5 posts per page for better user experience.
 
 
