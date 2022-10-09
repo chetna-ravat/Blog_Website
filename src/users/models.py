@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# we are image funstion from pillow library because we want to resize our image file
+# we are using image function from pillow library because we want to resize our image file
 from PIL import Image 
 
 
@@ -15,10 +15,10 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-# we want to override the save method which django provides by default and define our own save method
-# the super method would run the save function of our parent class
-    def save(self):
-        super().save()
+    # we want to override the save method which django provides by default and define our own save method
+    # the super method would run the save function of our parent class
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super().save(force_insert, force_update, using, update_fields)
 
         img = Image.open(self.image.path)
 
@@ -26,4 +26,5 @@ class Profile(models.Model):
             output_size = (300,300)
             img.thumbnail(output_size)
             img.save(self.image.path)
+
 
