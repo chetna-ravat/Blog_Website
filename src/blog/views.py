@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.template import context
@@ -10,6 +10,8 @@ from django.views.generic import (
     DeleteView,
 )
 from .models import Post
+from django.contrib.auth.models  import User
+from django.contrib import messages
 
 
 # Create your views here.
@@ -91,5 +93,13 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == post.author:
             return True
         return False
+    
+def sendEmail(request, pk):
+    user_email = User.objects.filter(username=request.user).first().email
+    if not user_email:
+        messages.warning(request, f'Please update correct email in profile')
+    else:
+        messages.success(request, f'Successfully sent post to {user_email}')
+    return redirect('post-detail', pk)
 
 
