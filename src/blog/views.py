@@ -38,6 +38,7 @@ def send_email(request, pk):
         messages.success(request, f'Successfully sent post to {user_email}')
     return redirect('post-detail', pk)
 
+
 class PostListView(ListView):
     model = Post
     template_name = 'blog/home.html'   # <app>/<model>_<viewtype>.html 
@@ -46,7 +47,6 @@ class PostListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 5
     
-
 
 class UserPostListView(ListView):
     model = Post
@@ -57,7 +57,6 @@ class UserPostListView(ListView):
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-date_posted')
-
 
 
 class PostDetailView(DetailView):
@@ -95,13 +94,13 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         check_user_and_author_same(self)
 
+
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     success_url = '/'
 
     def test_func(self):
         check_user_and_author_same(self)
-
 
 
 ### Utility methods ###
