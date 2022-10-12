@@ -15,8 +15,12 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from typing import Union
+import logging
+
+logger = logging.getLogger(__name__)
 
 def home(request):
+
     #  lets create a dictionary and call it context, lets create a key named posts and the value of that key will be the data above in the posts list
     context = { 
         'posts': Post.objects.all()
@@ -27,6 +31,7 @@ def send_email(request, pk):
     user_email = User.objects.filter(username=request.user).first().email
     blog_post = Post.objects.filter(id=pk).first()
     if not user_email:
+        logger.warning(f'Failed to send post {pk} via email due to missing user email')
         messages.warning(request, f'Please update correct email in profile')
     else:
         send_mail(
@@ -35,6 +40,7 @@ def send_email(request, pk):
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[user_email]
         )
+        logger.info(f'Successfully sent post {pk} via email')
         messages.success(request, f'Successfully sent post to {user_email}')
     return redirect('post-detail', pk)
 
