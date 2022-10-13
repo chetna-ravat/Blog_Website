@@ -124,9 +124,7 @@ def check_user_and_author_same(post_obj: Union[PostDeleteView, PostUpdateView]):
     '''
         Check user in request is same as author of post
     '''
-    print(type(post_obj))
     post = post_obj.get_object()
-    print(f"{post.author} {post_obj.request.user}")
     if post_obj.request.user == post.author:
         return True
     return False
