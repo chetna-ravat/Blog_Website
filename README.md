@@ -42,3 +42,16 @@ python3 manage.py runserver
 
 Open http://localhost:8000 on web browser to access blog application.
 
+## How to run tests
+
+#### Run all tests
+```shell
+python3 manage.py test
+```
+
+#### Run individual test
+```shell
+python3 manage.py test blog.tests.test_views.BlogPostTests.test_blog_home_page_view_accessed_successfully
+```
+
+More detail on running test can be found [here](https://docs.djangoproject.com/en/4.1/topics/testing/overview/#running-tests)
