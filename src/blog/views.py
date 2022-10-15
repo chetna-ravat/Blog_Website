@@ -67,13 +67,15 @@ class UserPostListView(ListView):
         '''
             return query set consists of posts posted by user and ordered
             by posted date.
+
+            Raise Not found error when user doesn't exist in User model
         '''
         try: 
             user = get_object_or_404(User, username=self.kwargs.get('username'))
         except Http404:
-            logger.error("Failed to find username in User model.")
-            messages.warning("Something went wrong, can not view posts filtered by user.")
-            return
+            logger.error(f"Failed to find username {self.kwargs.get('username')} in User model.")
+            messages.warning(self.request, "Something went wrong, can not view posts filtered by user.")
+            raise Http404("User doesn't exist")
         return Post.objects.filter(author=user).order_by('-date_posted')
 
 
