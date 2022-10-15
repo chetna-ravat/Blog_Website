@@ -24,7 +24,7 @@ class UserTests(TestCase):
         cls.user2.save()
 
 
-    ### LOGIN / LOGOUT  ###
+    ### Login/Logout  ###
     def test_user_can_login_succesfully(self):
         login_status = self.client.login(username='tester1', password='tester123')
         
@@ -44,3 +44,76 @@ class UserTests(TestCase):
         response = self.client.get(reverse('post-create'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/login/?next=/post/new/")
+    
+    ### Register ###
+
+    def test_register_page_view_accessed_successfully(self):
+        response = self.client.get(reverse("register"))
+
+        self.assertEqual(response.status_code, 200)
+    
+    def test_register_page_using_correct_template(self):
+        response = self.client.get(reverse("register"))
+
+        self.assertTemplateUsed(response, "users/register.html")
+    
+    def test_successful_registeration_redirects_to_login_page(self):
+        response = self.client.post(reverse('register'), {
+            "username": "tester",
+            "email": "tester@example.com",
+            "password1": "Tester123xyZ",
+            "password2": "Tester123xyZ"
+        })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login/")
+
+    def test_registeration_registers_correct_user(self):
+        response = self.client.post(reverse('register'), {
+            "username": "tester",
+            "email": "tester@example.com",
+            "password1": "Tester123xyZ",
+            "password2": "Tester123xyZ"
+        })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(User.objects.filter(id=3).first().username, "tester")
+        self.assertEqual(User.objects.filter(id=3).first().email, "tester@example.com")
+
+    ### Profile
+    def test_profile_page_view_access_redirected_to_login(self):
+        response = self.client.get(reverse("profile"))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login/?next=/profile/")
+        
+    def test_profile_page_view_accessed_successfully(self):
+        self.client.login(username='tester1', password='tester123')
+
+        response = self.client.get(reverse("profile"))
+
+        self.assertEqual(response.status_code, 200)
+
+        self.client.logout()
+    
+    def test_profile_page_using_correct_template(self):
+        self.client.login(username='tester1', password='tester123')
+        response = self.client.get(reverse("profile"))
+
+        self.assertTemplateUsed(response, "users/profile.html")
+
+        self.client.logout()
+    
+    def test_profile_update(self):
+        self.client.login(username='tester1', password='tester123')
+
+        response = self.client.post(reverse('profile'), {
+            "username": "tester1",
+            "email": "tester12@example.com",
+        })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/profile/")
+        self.assertEqual(User.objects.filter(id=1).first().email, "tester12@example.com")
+
+        self.client.logout()
