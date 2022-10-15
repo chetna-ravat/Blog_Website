@@ -6,12 +6,8 @@ from django.contrib import messages
 #  login_required decorator restricts certain routes,
 #  we are using it to restrict access to profile page for user who are not logged in
 from django.contrib.auth.decorators import login_required 
-
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
-
-
-# Create your views here.
 
 def register(request):
     if request.method == "POST":
