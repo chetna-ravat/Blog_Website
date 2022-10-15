@@ -39,6 +39,10 @@ python3 -c 'from django.core.management.utils import get_random_secret_key; prin
 ```
 Update [ACTUAL_SECURITY_KEY](https://github.com/chetna-ravat/Blog_Website/blob/main/src/django_project/.env#L2) with generated security key.
 
+#### Complete email setup
+Follow through [Setup to send email](https://github.com/chetna-ravat/Blog_Website#setup-to-send-email) section to get email setup.
+If you want to skip this and not use email feature then comment out **EMAIL** related [settings](https://github.com/chetna-ravat/Blog_Website/blob/main/src/django_project/settings.py#L155)
+
 #### Run the project
 ```shell
 python3 manage.py runserver
