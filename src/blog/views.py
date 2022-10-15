@@ -17,6 +17,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from typing import Union
 import logging
+from django.contrib.auth.decorators import login_required 
 
 logger = logging.getLogger(__name__)
 
@@ -28,13 +29,14 @@ def home(request):
     
     return render (request,'blog/home.html',context) 
 
+@login_required
 def send_email(request, pk):
     user_email = User.objects.filter(username=request.user).first().email
     blog_post = Post.objects.filter(id=pk).first()
 
     if not user_email:
         logger.warning(f'Failed to send post {pk} via email due to missing user email')
-        messages.warning(request, f'Please update correct email in profile')
+        messages.warning(request, 'Make sure you are logged in as correct user with correct email address.')
     else:
         send_mail(
             subject=blog_post.title,

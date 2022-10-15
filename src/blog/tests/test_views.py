@@ -1,8 +1,8 @@
-from this import d
 from django.test import TestCase, Client
 from django.urls import reverse
 from blog.models import Post
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 
 class BlogPostTests(TestCase):
 
@@ -106,7 +106,7 @@ class BlogPostTests(TestCase):
         self.assertEqual(response.status_code, 404)
 
     ### Post Create ###
-    def test_post_create_view_access_redirected(self):
+    def test_post_create_view_access_redirected_to_login(self):
         response = self.client.get(reverse('post-create'))
 
         self.assertEqual(response.status_code, 302)
@@ -145,7 +145,7 @@ class BlogPostTests(TestCase):
         self.client.logout()
     
     ### Post Update ###
-    def test_post_update_view_access_redirected(self):
+    def test_post_update_view_access_redirected_to_login(self):
         response = self.client.get(reverse('post-update', kwargs = {'pk': 1}))
 
         self.assertEqual(response.status_code, 302)
@@ -182,7 +182,7 @@ class BlogPostTests(TestCase):
         self.client.logout()
 
     ### Post Delete ###
-    def test_post_delete_view_access_redirected(self):
+    def test_post_delete_view_access_redirected_to_login(self):
         response = self.client.get(reverse('post-delete', kwargs = {'pk': 2}))
 
         self.assertEqual(response.status_code, 302)
@@ -225,5 +225,44 @@ class BlogPostTests(TestCase):
 
         self.client.logout()
 
-    ### (TODO) Send Post via Email ###
+    ### Send Post via Email ###
 
+    def test_send_email_view_access_redirected_to_login(self):
+        response = self.client.get(reverse('send-email', kwargs = {'pk': 1}))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login/?next=/post/1/send-email/")
+
+    def test_send_email_view_accessed_successfully(self):
+        self.client.login(username='tester1', password='tester123')
+        response = self.client.get(reverse('send-email', kwargs = {'pk': 1}))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/post/1/")
+
+        self.client.logout()
+
+    def test_post_sent_successfully_message(self):
+        self.client.login(username='tester1', password='tester123')
+
+        response = self.client.get(reverse('send-email', kwargs = {'pk': 1}))
+        
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Successfully sent post to tester1@example.com')
+
+        self.client.logout()
+
+    def test_post_sent_failed_when_email_is_missing(self):
+        user = User.objects.create(username='tester')
+        user.set_password('tester111')
+        user.save()
+        self.client.login(username='tester', password='tester111')
+
+        response = self.client.get(reverse('send-email', kwargs = {'pk': 1}))
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Make sure you are logged in as correct user with correct email address.')
+
+        self.client.logout()
