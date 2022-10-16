@@ -37,11 +37,11 @@ pip install -r requirements.txt
 ```shell
 python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 ```
-Update [ACTUAL_SECURITY_KEY](https://github.com/chetna-ravat/EduBlog/blob/main/src/django_project/.env#L2) with generated security key.
+Update [ACTUAL_SECURITY_KEY](https://github.com/chetna-ravat/EduBlog/blob/main/src/education_project/.env#L2) with generated security key.
 
 #### Complete email setup
 Follow through [Setup to send email](https://github.com/chetna-ravat/EduBlog#setup-to-send-email) section to get email setup.
-If you want to skip this and not use email feature then comment out **EMAIL** related [settings](https://github.com/chetna-ravat/EduBlog/blob/main/src/django_project/settings.py#L155)
+If you want to skip this and not use email feature then comment out **EMAIL** related [settings](https://github.com/chetna-ravat/EduBlog/blob/main/src/education_project/settings.py#L155)
 
 #### Run the project
 ```shell
@@ -72,4 +72,4 @@ Follow through this [article](https://www.sitepoint.com/django-send-email/) to `
 
 #### Update EMAIL environment variables
 
-Update `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` in [.env](https://github.com/chetna-ravat/EduBlog/blob/main/src/django_project/.env) file.
+Update `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` in [.env](https://github.com/chetna-ravat/EduBlog/blob/main/src/education_project/.env) file.
