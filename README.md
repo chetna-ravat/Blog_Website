@@ -73,3 +73,7 @@ Follow through this [article](https://www.sitepoint.com/django-send-email/) to `
 #### Update EMAIL environment variables
 
 Update `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` in [.env](https://github.com/chetna-ravat/EduBlog/blob/main/src/education_project/.env) file.
+
+## Demo
+
+https://user-images.githubusercontent.com/61097652/198910280-f589df08-832c-4fa8-b356-4c2d0b70e6cc.mp4
