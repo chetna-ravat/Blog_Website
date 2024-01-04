@@ -64,6 +64,20 @@ python3 manage.py test blog.tests.test_views.BlogPostTests.test_blog_home_page_v
 
 More detail on running test can be found [here](https://docs.djangoproject.com/en/4.1/topics/testing/overview/#running-tests)
 
+## How to run project in docker container
+
+#### Build container
+```shell
+docker build -t edublog-app .
+```
+
+#### Run project in container
+```shell
+docker run -it -p 8000:8000 edublog-app
+```
+
+Open http://localhost:8000 on web browser to access blog application.
+
 ### Setup to send email
 
 #### Setup an APP Password in GMAIL
